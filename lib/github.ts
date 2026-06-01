@@ -62,7 +62,7 @@ export async function fetchRepoInfo(
       if (!token) {
         throw new Error(
           "Repository not found or it is private. " +
-          "Sign in with GitHub (top bar button)."
+          "Sign in with GitHub and try again."
         );
       } else {
         throw new Error(

@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import { AlertCircle, ExternalLink, RefreshCw } from "lucide-react";
 
 interface GitHubAuthHelpProps {
@@ -16,8 +17,9 @@ const ERROR_COPY: Record<NonNullable<GitHubAuthHelpProps["errorType"]>, string> 
 
 export function GitHubAuthHelp({ errorType = "generic", onClose }: GitHubAuthHelpProps) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-zinc-950 p-6 font-sans text-white shadow-2xl">
-      <div className="mb-5 flex items-start justify-between gap-4">
+    <div className="flex max-h-[min(90vh,760px)] w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-950 font-sans text-white shadow-2xl">
+      <div className="shrink-0 border-b border-white/10 px-5 py-4 sm:px-6 sm:py-5">
+        <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
           <div>
@@ -30,15 +32,16 @@ export function GitHubAuthHelp({ errorType = "generic", onClose }: GitHubAuthHel
         {onClose && (
           <button
             onClick={onClose}
-            className="rounded-lg px-2 py-1 text-xl leading-none text-white/45 transition-colors hover:bg-white/5 hover:text-white"
+            className="cursor-pointer rounded-lg px-2 py-1 text-xl leading-none text-white/45 transition-colors hover:bg-white/5 hover:text-white"
             aria-label="Close"
           >
             x
           </button>
         )}
+        </div>
       </div>
 
-      <div className="space-y-4 text-sm leading-relaxed text-white/75">
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4 text-sm leading-relaxed text-white/75 sm:px-6">
         <section className="rounded-xl border border-emerald-500/20 bg-emerald-950/10 p-4">
           <div className="font-medium text-white">If you are just scanning a repository</div>
           <p className="mt-1">
@@ -87,7 +90,8 @@ AUTH_SECRET=...`}
         </section>
       </div>
 
-      <div className="mt-5 flex flex-col-reverse gap-2 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="shrink-0 border-t border-white/10 px-5 py-4 sm:px-6">
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
         <a
           href="https://github.com/settings/applications/new"
           target="_blank"
@@ -101,20 +105,21 @@ AUTH_SECRET=...`}
           {onClose && (
             <button
               onClick={onClose}
-              className="rounded-lg border border-white/15 px-4 py-2 text-sm text-white/75 transition-colors hover:bg-white/5 hover:text-white"
+              className="cursor-pointer rounded-lg border border-white/15 px-4 py-2 text-sm text-white/75 transition-colors hover:bg-white/5 hover:text-white"
             >
               Close
             </button>
           )}
           <button
             onClick={() => {
-              window.location.href = "/api/auth/signin/github";
+              signIn("github");
             }}
-            className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-white/90"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-white/90"
           >
             <RefreshCw className="h-4 w-4" />
             Reconnect GitHub
           </button>
+        </div>
         </div>
       </div>
     </div>

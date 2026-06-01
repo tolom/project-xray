@@ -19,7 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: "jwt",
   },
   trustHost: true, // Helps in some dev/prod setups with custom domains
-  debug: process.env.NODE_ENV === "development", // Logs helpful info in dev
+  debug: process.env.AUTH_DEBUG === "true",
   callbacks: {
     async jwt({ token, account }) {
       // Persist the GitHub access token to the JWT
