@@ -25,6 +25,10 @@
 *.pem
 *.zip
 
+# private local notes
+/doc/
+/plan_todo/
+
 # debug
 npm-debug.log*
 yarn-debug.log*
