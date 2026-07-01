@@ -1,17 +1,42 @@
 # Project X-Ray
 
-**Find fragile zones in AI-built apps before launch.**
+**AI-built app? Find the fragile parts before users do.**
 
-Project X-Ray scans a GitHub repository for structural risks that commonly appear in products built or heavily modified with AI coding agents.
+Project X-Ray scans repositories created or heavily modified with Claude Code, Codex, Cursor, Grok, Lovable, Bolt, v0, and other AI coding tools.
 
-It is not a generic code-quality dashboard. It is a launch-readiness scanner for vibe-coded and AI-assisted products: access boundaries, billing flows, database ownership, routing, configuration, oversized files, repeated business logic, and high-risk coupling.
+It finds launch-readiness risks: weak access boundaries, auth/billing coupling, browser-side mutations, missing ownership checks, oversized orchestration files, duplicated business logic, and temporary AI patches that quietly become production architecture.
 
-> You built fast with Claude Code, Codex, Cursor, Grok, Lovable, Bolt, v0, or another agentic tool. Project X-Ray helps you see what deserves review before real users depend on it.
+<p align="center">
+  <img src="docs/assets/project-xray-hero.svg" alt="Project X-Ray launch-readiness report preview" />
+</p>
+
+<p align="center">
+  <img alt="Status: MVP" src="https://img.shields.io/badge/status-MVP-orange" />
+  <img alt="Next.js 16" src="https://img.shields.io/badge/Next.js-16-black" />
+  <img alt="Code storage: none" src="https://img.shields.io/badge/code_storage-none-green" />
+  <img alt="LLM Skill included" src="https://img.shields.io/badge/LLM_skill-included-blue" />
+  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-lightgrey" />
+</p>
+
+> You built fast with AI coding agents. The demo works. Project X-Ray helps you see what deserves review before real users depend on it.
+
+---
+
+## Pick your path
+
+| I want to... | Start here |
+|---|---|
+| Scan an AI-built repository | [Quick start](#quick-start) |
+| Understand what X-Ray checks | [What Project X-Ray checks](#what-project-x-ray-checks) |
+| See the report format | [Example output](#example-output) |
+| Use it inside a chat or IDE agent | [Skill mode](#skill-mode) |
+| Repair issues with Claude Code, Codex, Cursor, or Grok | [Agent repair workflow](#agent-repair-workflow) |
+| Understand the current privacy model | [Privacy model](#privacy-model) |
 
 ## What you get
 
-- **Health score** — a 0-100 launch-readiness signal.
-- **Verdict** — Ready, Caution, or High Risk.
+- **Health score** — a `0-100` launch-readiness signal.
+- **Verdict** — `Ready`, `Caution`, or `High Risk`.
 - **Top risks** — the most important findings to verify first.
 - **Risk zones** — files and subsystems that deserve manual review.
 - **Plain-language impact** — what can break and why it matters for the product.
@@ -21,19 +46,18 @@ It is not a generic code-quality dashboard. It is a launch-readiness scanner for
 
 ## Why Project X-Ray exists
 
-AI agents can generate a working prototype quickly, but working UI is not the same as launch readiness.
+AI coding tools make it easy to build a working prototype.
 
-The most common failure mode is hidden fragility:
+They also make it easy to accidentally ship:
 
-- a private route whose access boundary is unclear;
-- a payment integration that needs stronger verification;
-- important account or plan changes handled too close to browser code;
-- database writes without an obvious ownership model;
-- one dashboard file that controls UI, access checks, billing state, and data writes;
-- three different copies of the same business rule;
-- temporary patches that accidentally become production behavior.
+- auth logic mixed into UI;
+- payment state changed from browser-controlled code;
+- database writes without ownership checks;
+- huge files that nobody wants to touch;
+- duplicated business rules across unrelated components;
+- temporary AI fixes that become production architecture.
 
-Project X-Ray focuses on those patterns.
+Project X-Ray exists for the moment after the demo works — but before real users depend on it.
 
 ## Who it is for
 
@@ -66,6 +90,26 @@ Project X-Ray uses a deterministic browser-side rule engine. The current rule se
 15. Composite AI-chaos smell: large file plus temporary fixes plus mixed responsibilities plus critical flow.
 
 See [docs/scoring-model.md](docs/scoring-model.md) for the scoring model.
+
+## How it works
+
+```text
+Repository
+   ↓
+Structural risk scan
+   ↓
+Health score + verdict
+   ↓
+Top risks with evidence
+   ↓
+Repair plan
+   ↓
+Small prompts for Claude Code / Codex / Cursor / Grok
+   ↓
+Re-scan after fixes
+```
+
+Project X-Ray is designed to work with AI coding agents, not compete with them.
 
 ## Example output
 
@@ -110,8 +154,6 @@ The skill follows current agent-workflow practices:
 
 ## Agent repair workflow
 
-Project X-Ray is designed to work with AI coding agents, not compete with them.
-
 Recommended loop:
 
 1. Scan the repository.
@@ -133,6 +175,8 @@ Good repair prompt:
 ```text
 Review `app/api/stripe/webhook/route.ts` and improve payment event verification. Do not change unrelated billing logic. Keep the change narrow. Return clear error responses for invalid events. After the change, run `npm run lint` and `npm run build`.
 ```
+
+For a more detailed repair loop, see [docs/agent-repair-workflow.md](docs/agent-repair-workflow.md).
 
 ## Privacy model
 
@@ -224,7 +268,7 @@ npm run build
 
 Near-term:
 
-- [ ] Add screenshots or demo GIF.
+- [ ] Replace the SVG preview with a real screenshot or demo GIF.
 - [ ] Add server-side GitHub proxy mode.
 - [ ] Add CLI mode.
 - [ ] Add intentionally fragile demo repository.
