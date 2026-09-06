@@ -116,6 +116,25 @@ export default function ProjectXRayScanner({
 
   const [mutedFiles, setMutedFiles] = useState<Set<string>>(() => loadMutedFiles());
 
+  const handleGitHubSignIn = useCallback(async () => {
+    try {
+      const response = await signIn("github", {
+        redirect: false,
+        callbackUrl: window.location.href,
+      });
+
+      if (response?.url) {
+        window.location.assign(response.url);
+        return;
+      }
+
+      toast.error(response?.error ? `GitHub sign-in failed: ${response.error}` : "GitHub sign-in did not return a redirect URL");
+    } catch (error) {
+      console.error("GitHub sign-in failed", error);
+      toast.error("GitHub sign-in failed. Check the server logs and OAuth settings.");
+    }
+  }, []);
+
   useEffect(() => {
     onActivityChange?.(isScanning || !!result);
   }, [isScanning, onActivityChange, result]);
@@ -696,7 +715,7 @@ Deep-scanned files: **${visibleResult.criticalFilesFetched}/${visibleResult.scan
             <Button
               variant="outline"
               className="w-full gap-2 border-white/20 bg-white/5 font-medium transition-colors hover:bg-white/10 hover:text-white sm:w-auto"
-              onClick={() => signIn("github")}
+              onClick={handleGitHubSignIn}
             >
               <GitBranch className="w-4 h-4" /> Sign in with GitHub
             </Button>
@@ -767,7 +786,7 @@ Deep-scanned files: **${visibleResult.criticalFilesFetched}/${visibleResult.scan
             <div className="mt-3 text-sm text-white/45">
               Private repositories require GitHub sign-in.{" "}
               <button
-                onClick={() => signIn("github")}
+                onClick={handleGitHubSignIn}
                 className="cursor-pointer font-medium text-white/80 underline underline-offset-4 transition-colors hover:text-white"
               >
                 Sign in with GitHub
